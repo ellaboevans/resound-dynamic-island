@@ -116,7 +116,7 @@ let creditAttr: [NSAttributedString.Key: Any] = [
     .foregroundColor: NSColor(white: 1, alpha: 0.8)
 ]
 let creditSize = (credit as NSString).size(withAttributes: creditAttr)
-(credit as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - creditSize.width / 2, y: 16), withAttributes: creditAttr)
+(credit as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - creditSize.width / 2, y: 36), withAttributes: creditAttr)
 
 image.unlockFocus()
 
