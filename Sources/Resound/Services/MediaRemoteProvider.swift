@@ -8,7 +8,7 @@ final class MediaRemoteProvider {
     private var registerNotifications: ((DispatchQueue) -> Void)?
     private var unregisterNotifications: (() -> Void)?
     private var timer: Timer?
-    private var lastInfo: NowPlayingInfo?
+    private(set) var lastInfo: NowPlayingInfo?
     let publisher = PassthroughSubject<NowPlayingInfo, Never>()
 
     struct NowPlayingInfo: Equatable {
@@ -86,24 +86,24 @@ final class MediaRemoteProvider {
 
     private func loadFramework() -> Bool {
         guard let lib = dlopen("/System/Library/PrivateFrameworks/MediaRemote.framework/MediaRemote", RTLD_LAZY) else {
-            print("[MediaRemote] failed to load framework")
             return false
         }
 
-        let MRRequest: @convention(c) (DispatchQueue, @escaping ([String: Any]) -> Void) -> Void
-            = loadSymbol(lib, "MRMediaRemoteRequestNowPlayingInfo")
-        let MRRegister: @convention(c) (DispatchQueue) -> Void
+        let MRRequest: (@convention(c) (DispatchQueue, @escaping ([String: Any]) -> Void) -> Void)?
+            = loadSymbol(lib, "MRMediaRemoteGetNowPlayingInfo")
+        let MRRegister: (@convention(c) (DispatchQueue) -> Void)?
             = loadSymbol(lib, "MRMediaRemoteRegisterForNowPlayingNotifications")
-        let MRUnregister: @convention(c) () -> Void
+        let MRUnregister: (@convention(c) () -> Void)?
             = loadSymbol(lib, "MRMediaRemoteUnregisterForNowPlayingNotifications")
 
         requestNowPlaying = MRRequest
         registerNotifications = MRRegister
         unregisterNotifications = MRUnregister
-        return true
+        return requestNowPlaying != nil
     }
 
-    private func loadSymbol<T>(_ lib: UnsafeMutableRawPointer, _ name: String) -> T {
-        unsafeBitCast(dlsym(lib, name), to: T.self)
+    private func loadSymbol<T>(_ lib: UnsafeMutableRawPointer, _ name: String) -> T? {
+        guard let sym = dlsym(lib, name) else { return nil }
+        return unsafeBitCast(sym, to: T.self)
     }
 }
