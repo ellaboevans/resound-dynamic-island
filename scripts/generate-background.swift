@@ -9,10 +9,10 @@ image.lockFocus()
 
 let ctx = NSGraphicsContext.current!.cgContext
 
-// Dark gradient background
+// Emerald green gradient background
 let colors = [
-    CGColor(red: 0.08, green: 0.08, blue: 0.08, alpha: 1),
-    CGColor(red: 0.02, green: 0.02, blue: 0.02, alpha: 1),
+    CGColor(red: 0.05, green: 0.37, blue: 0.24, alpha: 1),  // #0D5E3C emerald top
+    CGColor(red: 0.00, green: 0.10, blue: 0.05, alpha: 1),  // #001A0D deep green bottom
 ]
 let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray, locations: [0, 1])!
 ctx.drawLinearGradient(gradient, start: CGPoint(x: 0, y: 0), end: CGPoint(x: 0, y: CGFloat(height)), options: [])
