@@ -113,7 +113,7 @@ let instrSize = (instruction as NSString).size(withAttributes: instrAttr)
 let credit = "Built by Evans Elabo"
 let creditAttr: [NSAttributedString.Key: Any] = [
     .font: NSFont.systemFont(ofSize: 10, weight: .regular),
-    .foregroundColor: NSColor(white: 1, alpha: 0.25)
+    .foregroundColor: NSColor(white: 1, alpha: 0.8)
 ]
 let creditSize = (credit as NSString).size(withAttributes: creditAttr)
 (credit as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - creditSize.width / 2, y: 16), withAttributes: creditAttr)
