@@ -101,13 +101,20 @@ let instrSize = (instruction as NSString).size(withAttributes: instrAttr)
 (instruction as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - instrSize.width / 2, y: CGFloat(height) - 50), withAttributes: instrAttr)
 
 // Gatekeeper hint
-let gkNote = "If macOS warns about an unidentified developer: right-click and select Open"
+let gkNote = "If macOS blocks the app, run in Terminal:"
+let gkCmd = "sudo xattr -r -d com.apple.quarantine /Applications/Resound.app"
 let gkAttr: [NSAttributedString.Key: Any] = [
     .font: NSFont.systemFont(ofSize: 10, weight: .regular),
     .foregroundColor: NSColor(white: 1, alpha: 0.5)
 ]
+let gkCmdAttr: [NSAttributedString.Key: Any] = [
+    .font: NSFont.monospacedSystemFont(ofSize: 10, weight: .regular),
+    .foregroundColor: NSColor(white: 1, alpha: 0.65)
+]
 let gkSize = (gkNote as NSString).size(withAttributes: gkAttr)
-(gkNote as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - gkSize.width / 2, y: 85), withAttributes: gkAttr)
+(gkNote as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - gkSize.width / 2, y: 95), withAttributes: gkAttr)
+let gkCmdSize = (gkCmd as NSString).size(withAttributes: gkCmdAttr)
+(gkCmd as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - gkCmdSize.width / 2, y: 78), withAttributes: gkCmdAttr)
 
 // Builder credit
 let credit = "Built by Evans Elabo"
