@@ -28,6 +28,7 @@ final class NowPlayingService {
     private var lastSpotifyUri: String?
     private var lastNotificationDate = Date.distantPast
     private var fallbackTimer: Timer?
+    private var cancellables = Set<AnyCancellable>()
     let publisher = PassthroughSubject<NowPlayingInfo, Never>()
 
     func startMonitoring() {
@@ -43,6 +44,27 @@ final class NowPlayingService {
             name: NSNotification.Name("com.apple.Music.playerInfo"),
             object: nil
         )
+
+        MediaRemoteProvider.shared.publisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] remoteInfo in
+                guard let self else { return }
+                let isMusicApp = remoteInfo.sourceApp == "com.spotify.client" || remoteInfo.sourceApp == "com.apple.Music"
+                if !isMusicApp {
+                    self.publisher.send(NowPlayingInfo(
+                        trackTitle: remoteInfo.trackTitle,
+                        artistName: remoteInfo.artistName,
+                        albumTitle: remoteInfo.albumTitle,
+                        duration: remoteInfo.duration,
+                        elapsedTime: remoteInfo.elapsedTime,
+                        isPlaying: remoteInfo.isPlaying,
+                        artworkPath: ""
+                    ))
+                }
+            }
+            .store(in: &cancellables)
+
+        MediaRemoteProvider.shared.start()
 
         pollNowPlaying()
 
@@ -61,8 +83,10 @@ final class NowPlayingService {
 
     func stopMonitoring() {
         DistributedNotificationCenter.default().removeObserver(self)
+        MediaRemoteProvider.shared.stop()
         fallbackTimer?.invalidate()
         fallbackTimer = nil
+        cancellables.removeAll()
     }
 
     func playPause() { runAppleScript("tell application \"Spotify\" to playpause") }
