@@ -41,6 +41,8 @@ rm -rf "$STAGING_DIR" "$FINAL_DMG"
 mkdir -p "$STAGING_DIR"
 cp -R "$APP_PATH" "$STAGING_DIR/"
 cp "$ICON_PATH" "$STAGING_DIR/.VolumeIcon.icns" 2>/dev/null || true
+cp "${SCRIPT_DIR}/Fix Security.command" "$STAGING_DIR/"
+chmod +x "$STAGING_DIR/Fix Security.command"
 
 # ─── Build DMG with create-dmg ──────────────────────────────────────
 echo "Building DMG..."
@@ -52,6 +54,7 @@ create-dmg \
     --window-size 600 400 \
     --icon-size 96 \
     --icon "$APP_NAME.app" 150 200 \
+    --icon "Fix Security.command" 150 280 \
     --app-drop-link 450 200 \
     --hide-extension "$APP_NAME.app" \
     --format UDZO \
