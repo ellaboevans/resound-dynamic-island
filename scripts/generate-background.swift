@@ -58,15 +58,6 @@ pillPath.closeSubpath()
 ctx.addPath(pillPath)
 ctx.strokePath()
 
-// "Resound" label under left icon
-let label1 = "Resound"
-let attr1: [NSAttributedString.Key: Any] = [
-    .font: NSFont.systemFont(ofSize: 11, weight: .medium),
-    .foregroundColor: NSColor(white: 1, alpha: 0.3)
-]
-let size1 = (label1 as NSString).size(withAttributes: attr1)
-(label1 as NSString).draw(at: CGPoint(x: pillX + pillWidth / 2 - size1.width / 2, y: pillY - 28), withAttributes: attr1)
-
 // Applications icon zone — right side (folder outline)
 let folderWidth: CGFloat = 90
 let folderHeight: CGFloat = 72
@@ -87,15 +78,6 @@ folderPath.addLine(to: CGPoint(x: folderX + folderWidth * 0.1, y: folderY + fold
 folderPath.closeSubpath()
 ctx.addPath(folderPath)
 ctx.strokePath()
-
-// "Applications" label under right icon
-let label2 = "Applications"
-let attr2: [NSAttributedString.Key: Any] = [
-    .font: NSFont.systemFont(ofSize: 11, weight: .medium),
-    .foregroundColor: NSColor(white: 1, alpha: 0.3)
-]
-let size2 = (label2 as NSString).size(withAttributes: attr2)
-(label2 as NSString).draw(at: CGPoint(x: folderX + folderWidth / 2 - size2.width / 2, y: folderY - 28), withAttributes: attr2)
 
 // Arrow connecting them
 ctx.setStrokeColor(CGColor(red: 1, green: 1, blue: 1, alpha: 0.08))
@@ -118,22 +100,23 @@ ctx.move(to: arrowEnd)
 ctx.addLine(to: CGPoint(x: arrowEnd.x - arrowLen * cos(angle + 0.4), y: arrowEnd.y - arrowLen * sin(angle + 0.4)))
 ctx.strokePath()
 
-// Instruction text at bottom
+// Instruction text at bottom — pure white
 let instruction = "Drag Resound to your Applications folder"
 let instrAttr: [NSAttributedString.Key: Any] = [
     .font: NSFont.systemFont(ofSize: 13, weight: .regular),
-    .foregroundColor: NSColor(white: 1, alpha: 0.2)
+    .foregroundColor: NSColor(white: 1, alpha: 0.8)
 ]
 let instrSize = (instruction as NSString).size(withAttributes: instrAttr)
 (instruction as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - instrSize.width / 2, y: 40), withAttributes: instrAttr)
 
-// Version text
-let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
-let verAttr: [NSAttributedString.Key: Any] = [
-    .font: NSFont.systemFont(ofSize: 9, weight: .regular),
-    .foregroundColor: NSColor(white: 1, alpha: 0.1)
+// Builder credit at bottom center
+let credit = "Built by Evans Elabo"
+let creditAttr: [NSAttributedString.Key: Any] = [
+    .font: NSFont.systemFont(ofSize: 10, weight: .regular),
+    .foregroundColor: NSColor(white: 1, alpha: 0.25)
 ]
-("v\(version)" as NSString).draw(at: CGPoint(x: CGFloat(width) - 30, y: 20), withAttributes: verAttr)
+let creditSize = (credit as NSString).size(withAttributes: creditAttr)
+(credit as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - creditSize.width / 2, y: 16), withAttributes: creditAttr)
 
 image.unlockFocus()
 
