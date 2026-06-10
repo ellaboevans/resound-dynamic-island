@@ -34,6 +34,9 @@ jobs:
           cp Sources/Resound/Resources/Resound.icns Resound.app/Contents/Resources/
           codesign --force --deep --sign - Resound.app
 
+      - name: Install create-dmg
+        run: brew install create-dmg
+
       - name: Create DMG
         run: scripts/create-dmg.sh
 
