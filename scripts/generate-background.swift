@@ -100,14 +100,14 @@ ctx.move(to: arrowEnd)
 ctx.addLine(to: CGPoint(x: arrowEnd.x - arrowLen * cos(angle + 0.4), y: arrowEnd.y - arrowLen * sin(angle + 0.4)))
 ctx.strokePath()
 
-// Instruction text at bottom — pure white
+// Instruction text at top — pure white
 let instruction = "Drag Resound to your Applications folder"
 let instrAttr: [NSAttributedString.Key: Any] = [
     .font: NSFont.systemFont(ofSize: 13, weight: .regular),
     .foregroundColor: NSColor(white: 1, alpha: 0.8)
 ]
 let instrSize = (instruction as NSString).size(withAttributes: instrAttr)
-(instruction as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - instrSize.width / 2, y: 40), withAttributes: instrAttr)
+(instruction as NSString).draw(at: CGPoint(x: CGFloat(width) / 2 - instrSize.width / 2, y: CGFloat(height) - 50), withAttributes: instrAttr)
 
 // Builder credit at bottom center
 let credit = "Built by Evans Elabo"
