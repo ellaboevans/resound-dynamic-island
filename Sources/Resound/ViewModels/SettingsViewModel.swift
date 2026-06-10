@@ -11,6 +11,9 @@ final class SettingsViewModel: ObservableObject {
     @AppStorage("notchPosition") var notchPositionRaw = NotchPosition.center.rawValue
     @AppStorage("waveformStyle") var waveformStyleRaw = WaveformStyle.classic.rawValue
 
+    @AppStorage("displayMode") var displayModeRaw = DisplayMode.allScreens.rawValue
+    @AppStorage("selectedScreen") private var selectedScreenNameRaw = ""
+
     @AppStorage("playPauseKeyCode") var playPauseKeyCode: Double = 0
     @AppStorage("playPauseFlags") var playPauseFlags: Double = 0
     @AppStorage("nextTrackKeyCode") var nextTrackKeyCode: Double = 0
@@ -33,6 +36,26 @@ final class SettingsViewModel: ObservableObject {
     var waveformStyle: WaveformStyle {
         get { WaveformStyle(rawValue: waveformStyleRaw) ?? .classic }
         set { waveformStyleRaw = newValue.rawValue }
+    }
+
+    var displayMode: DisplayMode {
+        get { DisplayMode(rawValue: displayModeRaw) ?? .allScreens }
+        set {
+            displayModeRaw = newValue.rawValue
+            if newValue == .singleScreen && selectedScreenNameRaw.isEmpty {
+                selectedScreenNameRaw = NSScreen.main?.localizedName ?? ""
+            }
+        }
+    }
+
+    var selectedScreenName: String {
+        get {
+            if selectedScreenNameRaw.isEmpty {
+                return NSScreen.main?.localizedName ?? ""
+            }
+            return selectedScreenNameRaw
+        }
+        set { selectedScreenNameRaw = newValue }
     }
 
     var playPauseBinding: HotkeyBinding {
