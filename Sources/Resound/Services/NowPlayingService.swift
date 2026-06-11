@@ -136,14 +136,14 @@ final class NowPlayingService {
         if isAppRunning("Spotify") { runAppleScript("tell application \"Spotify\" to next track"); return }
         if isAppRunning("Music") { runAppleScript("tell application \"Music\" to next track"); return }
         guard isChromeRunning() else { return }
-        chromeMediaCommand("document.querySelector('[aria-label=\"Next\"]')?.click()")
+        chromeMediaCommand("document.querySelector('ytmusic-player-bar [aria-label=\"Next\"]')?.click()")
     }
 
     func previousTrack() {
         if isAppRunning("Spotify") { runAppleScript("tell application \"Spotify\" to previous track"); return }
         if isAppRunning("Music") { runAppleScript("tell application \"Music\" to previous track"); return }
         guard isChromeRunning() else { return }
-        chromeMediaCommand("document.querySelector('[aria-label=\"Previous\"]')?.click()")
+        chromeMediaCommand("document.querySelector('ytmusic-player-bar [aria-label=\"Previous\"]')?.click()")
     }
 
     private func isAppRunning(_ name: String) -> Bool {
